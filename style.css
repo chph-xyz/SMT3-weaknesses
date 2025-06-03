@@ -1,0 +1,138 @@
+body {
+    background-color: black; /* Set the entire page background to black */
+    color: white; /* Set text color to white */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    overflow-y: scroll; /* Always show vertical scrollbar */
+}
+
+table {
+  width: 80%;
+  border-collapse: collapse;
+  border: 1px solid white; /* White border for the table */
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid white; /* White border for table cells */
+}
+
+input {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 60%;
+  background-color: #333; /* Dark background for input */
+  color: white; /* White text for input */
+  border: 1px solid white; /* White border for input */
+}
+
+.dark-grey {
+  background-color: #333;
+}
+
+.black {
+  background-color: #000;
+}
+
+/* Fixed column widths */
+th, td {
+  width: 300px; /* Set the same width for all columns */
+}
+
+/* Highlight on hover */
+#dataTable td:hover,
+#dataTable th:hover {
+  background-color: #444;
+}
+
+/* Row + column highlight */
+#dataTable td,
+#dataTable th {
+  position: relative;
+}
+
+/* Add class to highlight entire row and column */
+.highlight-row td,
+.highlight-col {
+  background-color: #333 !important;
+}
+
+/* Sticky header */
+#dataTable thead th {
+    position: sticky;
+    top: 0;
+    background-color: #222;
+    z-index: 2;
+  }
+  
+  /* Make table scrollable if needed */
+  #dataTable {
+    border-collapse: collapse;
+    width: 80%;
+    overflow: auto;
+  }
+  
+  /* Adjust hover highlight color */
+  #dataTable td:hover,
+  #dataTable th:hover,
+  .highlight-row td,
+  .highlight-col {
+    background-color: #264d26 !important; /* dark green tint */
+  }
+  
+  #dataTable td:hover {
+    background-color: #706a30 !important; /* muted yellow tint */
+  }
+  
+  
+  /* Maintain row/column highlight (darker green) */
+  #dataTable td.hovered-row,
+  #dataTable th.hovered-row,
+  #dataTable td.hovered-col,
+  #dataTable th.hovered-col {
+    background-color: #264d26 !important; /* darker green */
+  }
+  
+  #dataTable {
+    table-layout: fixed;
+  }
+  
+  #dataTable th, #dataTable td {
+    width: 10.5%; /* 100% divided by 6 columns */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  #dataTable thead th:nth-child(1) {
+    background-color: #000000;
+    color: white;
+  }
+  
+  #dataTable thead th:nth-child(2) {
+    background-color: #8b0000; /* dark red */
+    color: white;
+  }
+  
+  #dataTable thead th:nth-child(3) {
+    background-color: #00008b; /* dark blue */
+    color: white;
+  }
+  
+  #dataTable thead th:nth-child(4) {
+    background-color: #2f4f4f; /* dark slate gray */
+    color: white;
+  }
+  
+  #dataTable thead th:nth-child(5) {
+    background-color: #006400; /* dark green */
+    color: white;
+  }
+  
+  #dataTable thead th:nth-child(6) {
+    background-color: #8b8000; /* dark yellow/olive */
+    color: white;
+  }
+  
