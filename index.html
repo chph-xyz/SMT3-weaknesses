@@ -2,121 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CSV Table Search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SMT3 Demon Weaknesses</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
   <h1>SMT3 Demon Weaknesses</h1>
   <input type="text" id="searchInput" placeholder="Search here..." />
-  <table id="dataTable">
-    <thead></thead>
-    <tbody></tbody>
-  </table>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const searchInput = document.getElementById("searchInput");
-      const table = document.getElementById("dataTable");
-      const tableBody = table.querySelector("tbody");
-      const tableHeader = table.querySelector("thead");
 
-      let globalData = [];
+  <div id="mainWrapper">
+    <div id="tableWrapper">
+      <table id="dataTable">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="rightPane">
+      <h2>Favorites</h2>
+      <table id="favoritesTable">
+        <thead>
+          <tr><th>Name</th><th>Weak</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
 
-      fetch("SMT3.csv")
-        .then((response) => response.text())
-        .then((csvText) => {
-          globalData = parseCSV(csvText);
-          populateTable(globalData);
+  <div id="tooltip"></div>
 
-          searchInput.addEventListener("input", () => {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filteredData = globalData.filter((row, index) =>
-              index === 0 || row.some((cell) => cell.toLowerCase().includes(searchTerm))
-            );
-            populateTable(filteredData);
-          });
-        })
-        .catch((error) => console.error("Error fetching or parsing CSV:", error));
-
-      function parseCSV(csvText) {
-        const results = Papa.parse(csvText.trim(), { skipEmptyLines: true });
-        return results.data.filter(row => row.length === 6);
-      }
-
-      function populateTable(data) {
-        tableBody.innerHTML = "";
-        tableHeader.innerHTML = "";
-
-        if (data.length === 0) {
-          const emptyRow = document.createElement("tr");
-          const emptyCell = document.createElement("td");
-          emptyCell.colSpan = 6;
-          emptyCell.textContent = "No matching results found.";
-          emptyRow.appendChild(emptyCell);
-          tableBody.appendChild(emptyRow);
-          return;
-        }
-
-        const headerRow = document.createElement("tr");
-        data[0].forEach((headerText) => {
-          const headerCell = document.createElement("th");
-          headerCell.textContent = headerText;
-          headerRow.appendChild(headerCell);
-        });
-        tableHeader.appendChild(headerRow);
-
-        data.slice(1).forEach((row, index) => {
-          const tableRow = document.createElement("tr");
-          const rowClass = index % 2 === 0 ? "dark-grey" : "black";
-          tableRow.classList.add(rowClass);
-
-          row.forEach((cellText) => {
-            const cellElement = document.createElement("td");
-            cellElement.textContent = cellText;
-            tableRow.appendChild(cellElement);
-          });
-
-          tableBody.appendChild(tableRow);
-        });
-      }
-
-      // Row and column highlighting
-      tableBody.addEventListener("mouseover", (e) => {
-        if (e.target.tagName !== "TD") return;
-
-        const cell = e.target;
-        const row = cell.parentElement;
-        const colIndex = Array.from(row.children).indexOf(cell);
-
-        tableBody.querySelectorAll("td").forEach((c) => {
-          c.classList.remove("hovered-col");
-        });
-        tableBody.querySelectorAll("tr").forEach((r) => {
-          r.classList.remove("hovered-row");
-        });
-
-        row.classList.add("hovered-row");
-
-        Array.from(tableBody.rows).forEach((r) => {
-          const colCell = r.cells[colIndex];
-          if (colCell) colCell.classList.add("hovered-col");
-        });
-
-        cell.classList.add("hovered-cell");
-      });
-
-      tableBody.addEventListener("mouseout", (e) => {
-        if (e.target.tagName !== "TD") return;
-
-        tableBody.querySelectorAll("td").forEach((c) => {
-          c.classList.remove("hovered-col", "hovered-cell");
-        });
-        tableBody.querySelectorAll("tr").forEach((r) => {
-          r.classList.remove("hovered-row");
-        });
-      });
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
