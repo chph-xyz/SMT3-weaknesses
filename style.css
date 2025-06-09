@@ -194,3 +194,30 @@ input {
 #dataTable tbody td.hovered-cell {
   background-color: #666622 !important;
 }
+
+#favoritesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+#favoritesHeader h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+#resetFavoritesButton {
+  padding: 6px 12px;
+  font-size: 1.1em;
+  cursor: pointer;
+  background-color: #800000;
+  color: white;
+  border: solid;
+  border-color: white;
+  border-radius: 10px;
+}
+
+#resetFavoritesButton:hover {
+  background-color: #a00000;
+}

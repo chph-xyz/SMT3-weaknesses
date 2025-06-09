@@ -5,15 +5,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const tableHeader = dataTable.querySelector("thead");
   const tooltip = document.getElementById("tooltip");
   const favoritesTableBody = document.querySelector("#favoritesTable tbody");
+  const resetFavoritesButton = document.getElementById("resetFavoritesButton");
 
   let globalData = [];
 
   const tooltipMap = {
-    "weak": { text: "This element deals more damage to enemy", bg: "#8b0000" },
-    "strong": { text: "This element deals less damage to enemy", bg: "#00008b" },
-    "null": { text: "This element deals no damage to enemy", bg: "#2f4f4f" },
-    "drain": { text: "This element is absorbed by enemy", bg: "#006400" },
-    "repel": { text: "This element will be reflected by enemy", bg: "#8b8000" }
+    "weak":   { text: "This element deals more damage to enemy",       bg: "#8b0000" },
+    "strong": { text: "This element deals less damage to enemy",       bg: "#00008b" },
+    "null":   { text: "This element deals no damage to enemy",         bg: "#2f4f4f" },
+    "drain":  { text: "This element is absorbed by enemy",             bg: "#006400" },
+    "repel":  { text: "This element will be reflected by enemy",       bg: "#8b8000" }
   };
 
   fetch("SMT3.csv")
@@ -31,11 +32,14 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
+  resetFavoritesButton.addEventListener("click", () => {
+    favoritesTableBody.innerHTML = "";
+  });
+
   function populateTable(data) {
     tableBody.innerHTML = "";
     tableHeader.innerHTML = "";
 
-    // Create header
     const headerRow = document.createElement("tr");
     for (let colIndex = 0; colIndex < data[0].length; colIndex++) {
       const headerText = data[0][colIndex];
@@ -45,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     tableHeader.appendChild(headerRow);
 
-    // Create rows
     for (let i = 1; i < data.length; i++) {
       const row = data[i];
       const tr = document.createElement("tr");
@@ -90,7 +93,6 @@ document.addEventListener("DOMContentLoaded", function () {
     favoritesTableBody.appendChild(tr);
   }
 
-  // Hover logic for rows & columns excluding first column (index 0)
   dataTable.addEventListener("mouseover", function (e) {
     const target = e.target;
     if (target.tagName !== "TD") return;
@@ -111,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
       tooltip.style.display = "none";
     }
 
-    // Highlight column and cell
     clearHoverClasses();
     const allRows = dataTable.querySelectorAll("tbody tr");
     for (let i = 0; i < allRows.length; i++) {
@@ -138,4 +139,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const allTds = dataTable.querySelectorAll("tbody td");
     allTds.forEach(td => td.classList.remove("hovered-col", "hovered-cell"));
   }
+});
+
+document.getElementById("resetFavoritesButton").addEventListener("click", () => {
+  favoritesTableBody.innerHTML = "";
 });
