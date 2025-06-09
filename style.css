@@ -10,48 +10,157 @@ body {
 input {
   margin-bottom: 10px;
   padding: 5px;
-  width: 60%;
+  width: 30%;
   background-color: #333;
   color: white;
   border: 1px solid white;
 }
 
-table {
-  width: 80%;
+#mainWrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+#tableWrapper {
+  flex: 1;
+  padding-right: 40px;
+}
+
+#rightPane {
+  width: 25%;
+  padding-right: 20px;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+}
+
+#favoritesTable {
+  width: 100%;
   border-collapse: collapse;
   border: 1px solid white;
+  margin-top: 10px;
   table-layout: fixed;
 }
 
-th, td {
-  padding: 8px;
+#favoritesTable th {
+  padding-left: 8px;
+  height: 32px;
+  line-height: 1.0em;
   text-align: left;
   border: 1px solid white;
-  width: 10.5%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Alternating row colors */
-.dark-grey {
-  background-color: #222;
+#favoritesTable td {
+  height: 36px;
+  line-height: 1.0em;
+  text-align: left;
+  border: 1px solid white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-left: 8px;
 }
 
-.black {
-  background-color: #111;
+#favoritesTable td:first-child {
+  padding: 0;
 }
 
-/* Sticky header */
-#dataTable thead th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  color: white;
-  background-color: #222;
+#favoritesTable .demon-button {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  color: inherit;
+  text-align: left;
+  padding: 8px;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  display: block;
+  line-height: 1.2em;
+  box-sizing: border-box;
 }
 
-/* Color-code each header */
+#favoritesTable .demon-button:hover {
+  background-color: #666622;
+}
+
+.favorite-cell.clickable {
+  cursor: pointer;
+}
+
+#dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid white;
+  table-layout: fixed;
+}
+
+#dataTable th {
+  padding-left: 8px;
+  height: 32px;
+  line-height: 1.0em;
+  text-align: left;
+  border: 1px solid white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#dataTable td {
+  height: 36px;
+  line-height: 1.0em;
+  text-align: left;
+  border: 1px solid white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-left: 8px;
+}
+
+#dataTable td:first-child {
+  padding: 0;
+}
+
+.demon-button {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  color: inherit;
+  text-align: left;
+  padding: 8px;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  display: block;
+  line-height: 1.2em;
+  box-sizing: border-box;
+}
+
+.demon-button:hover {
+  background-color: #666622;
+}
+
+#dataTable tbody tr:nth-child(even) td {
+  background-color: #0a0a0a;
+}
+
+#dataTable tbody tr:nth-child(odd) td {
+  background-color: #1f1f1f;
+}
+
+#favoritesTable tbody tr:nth-child(even) td {
+  background-color: #0a0a0a;
+}
+
+#favoritesTable tbody tr:nth-child(odd) td {
+  background-color: #1f1f1f;
+}
+
 #dataTable thead th:nth-child(1) { background-color: #000000; }
 #dataTable thead th:nth-child(2) { background-color: #8b0000; }
 #dataTable thead th:nth-child(3) { background-color: #00008b; }
@@ -59,28 +168,29 @@ th, td {
 #dataTable thead th:nth-child(5) { background-color: #006400; }
 #dataTable thead th:nth-child(6) { background-color: #8b8000; }
 
-/* Completely block header hover effects */
-#dataTable thead tr:hover,
-#dataTable thead th:hover,
-#dataTable thead td:hover,
-#dataTable thead th.cell-hover {
-  background-color: inherit !important;
-  color: inherit !important;
-}
+#favoritesTable thead th:nth-child(1) { background-color: #000000; }
+#favoritesTable thead th:nth-child(2) { background-color: #8b0000; }
 
-/* Hover effects for tbody only */
-#dataTable tbody td:hover {
-  background-color: #666622 !important; /* yellowish tint */
+#tooltip {
+  position: absolute;
+  display: none;
+  background: #111;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 16px;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 1000;
 }
 
 #dataTable tbody tr:hover td {
-  background-color: #003300; /* green for row */
+  background-color: #003300;
 }
 
 #dataTable tbody td.hovered-col {
-  background-color: #003300 !important; /* green for column */
+  background-color: #003300 !important;
 }
 
 #dataTable tbody td.hovered-cell {
-  background-color: #666622 !important; /* yellow for specific cell */
+  background-color: #666622 !important;
 }
