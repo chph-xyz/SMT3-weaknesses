@@ -7,6 +7,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const favoritesTableBody = document.querySelector("#favoritesTable tbody");
   const resetFavoritesButton = document.getElementById("resetFavoritesButton");
 
+  const focusSearchButton = document.getElementById("focusSearchButton");
+
+  focusSearchButton.addEventListener("click", () => {
+  searchInput.value = "";
+  searchInput.focus();
+  const filteredData = globalData; // Show all data after clearing search
+  populateTable(filteredData);
+  });
+
   let globalData = [];
 
   const tooltipMap = {
