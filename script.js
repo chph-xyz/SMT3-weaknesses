@@ -1,20 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("searchInput");
   const dataTable = document.getElementById("dataTable");
+  const favoritesTable = document.getElementById("favoritesTable");
   const tableBody = dataTable.querySelector("tbody");
   const tableHeader = dataTable.querySelector("thead");
   const tooltip = document.getElementById("tooltip");
-  const favoritesTableBody = document.querySelector("#favoritesTable tbody");
+  const favoritesTableBody = favoritesTable.querySelector("tbody");
   const resetFavoritesButton = document.getElementById("resetFavoritesButton");
-
   const focusSearchButton = document.getElementById("focusSearchButton");
-
-  focusSearchButton.addEventListener("click", () => {
-  searchInput.value = "";
-  searchInput.focus();
-  const filteredData = globalData; // Show all data after clearing search
-  populateTable(filteredData);
-  });
 
   let globalData = [];
 
@@ -40,6 +33,12 @@ document.addEventListener("DOMContentLoaded", function () {
         populateTable(filteredData);
       });
     });
+
+  focusSearchButton.addEventListener("click", () => {
+    searchInput.value = "";
+    searchInput.focus();
+    populateTable(globalData);
+  });
 
   resetFavoritesButton.addEventListener("click", () => {
     favoritesTableBody.innerHTML = "";
@@ -102,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
     favoritesTableBody.appendChild(tr);
   }
 
-  dataTable.addEventListener("mouseover", function (e) {
+  function handleTooltipHover(e, table, headerSelector) {
     const target = e.target;
     if (target.tagName !== "TD") return;
     if (target.cellIndex === 0) {
@@ -111,11 +110,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const colIndex = target.cellIndex;
-    const tooltipKey = tableHeader.querySelector("th:nth-child(" + (colIndex + 1) + ")").textContent.toLowerCase();
+    const headerCell = document.querySelector(`${headerSelector} th:nth-child(${colIndex + 1})`);
+    const tooltipKey = headerCell.textContent.toLowerCase();
     const tooltipData = tooltipMap[tooltipKey];
 
     if (tooltipData) {
-      tooltip.textContent = tooltipData.text;
+      const base = tooltipData.text;
+      const content = target.textContent;
+      let extra = "";
+
+      if (content.includes("Nat")) extra += "Nat - Fir Ice Elc Frc\n";
+      if (content.includes("Mor")) extra += "Mor - Lgt Drk\n";
+      if (content.includes("Spi")) extra += "Spi - Crs Nrv Mnd\n";
+      if (content.includes("Sta")) extra += "Sta - Lgt Drk Crs Nrv Mnd\n";
+
+      tooltip.innerHTML = base + (extra ? "<br>" + extra.trim().replace(/\n/g, "<br>") : "");
       tooltip.style.backgroundColor = tooltipData.bg;
       tooltip.style.display = "block";
     } else {
@@ -123,33 +132,36 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     clearHoverClasses();
-    const allRows = dataTable.querySelectorAll("tbody tr");
+    const allRows = table.querySelectorAll("tbody tr");
     for (let i = 0; i < allRows.length; i++) {
       const td = allRows[i].cells[colIndex];
       if (td) td.classList.add("hovered-col");
     }
     target.classList.add("hovered-cell");
-  });
-
-  dataTable.addEventListener("mousemove", function (e) {
-    if (tooltip.style.display === "block") {
-      tooltip.style.left = e.pageX + 10 + "px";
-      tooltip.style.top = e.pageY + 10 + "px";
-    }
-  });
-
-  dataTable.addEventListener("mouseout", function (e) {
-    if (e.target.tagName !== "TD") return;
-    clearHoverClasses();
-    tooltip.style.display = "none";
-  });
+  }
 
   function clearHoverClasses() {
-    const allTds = dataTable.querySelectorAll("tbody td");
+    const allTds = document.querySelectorAll("td");
     allTds.forEach(td => td.classList.remove("hovered-col", "hovered-cell"));
   }
-});
 
-document.getElementById("resetFavoritesButton").addEventListener("click", () => {
-  favoritesTableBody.innerHTML = "";
+  [dataTable, favoritesTable].forEach((table) => {
+    table.addEventListener("mouseover", (e) => {
+      const headerSelector = table.id === "dataTable" ? "#dataTable thead" : "#favoritesTable thead";
+      handleTooltipHover(e, table, headerSelector);
+    });
+
+    table.addEventListener("mousemove", function (e) {
+      if (tooltip.style.display === "block") {
+        tooltip.style.left = e.pageX + 10 + "px";
+        tooltip.style.top = e.pageY + 10 + "px";
+      }
+    });
+
+    table.addEventListener("mouseout", function (e) {
+      if (e.target.tagName !== "TD") return;
+      clearHoverClasses();
+      tooltip.style.display = "none";
+    });
+  });
 });
